@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Material Design Lite</title>
+    <title>Banana Box - SRV1</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -178,7 +178,7 @@
         <defs>
           <mask id="piemask" maskContentUnits="objectBoundingBox">
             <circle cx=0.5 cy=0.5 r=0.49 fill="white" />
-            <circle cx=0.5 cy=0.5 r=0.40 fill="black" />
+            <circle cx=0.1 cy=0.1 r=0.10 fill="black" />
           </mask>
           <g id="piechart">
             <circle cx=0.5 cy=0.5 r=0.5 />
@@ -221,7 +221,7 @@
           </g>
         </defs>
       </svg>
-      <a href="https://github.com/google/material-design-lite/blob/master/templates/dashboard/" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">View Source</a>
+      <a href="<?php echo "http://".$_SERVER['HTTP_HOST']."/edit.php"; ?>" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">Edit Source</a>
     <script src="material.min.js"></script>
   </body>
 </html>
