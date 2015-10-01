@@ -96,10 +96,8 @@
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
           <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-			<canvas id="quickGraphs" width="500" height="125"></canvas>
-			<canvas id="quickGraphs2" width="500" height="125"></canvas>
-			<canvas id="quickGraphs3" width="500" height="125"></canvas>
-			<canvas id="quickGraphs4" width="500" height="125"></canvas>
+			<canvas id="cpuGraphs" width="450" height="125"></canvas>&nbsp
+			<canvas id="tempGraphs" width="450" height="125"></canvas>
           </div>
           <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
             <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
@@ -215,28 +213,24 @@
 	<script src="smoothie.js"></script>
 	<script>
 		var chart = new SmoothieChart({millisPerPixel:50,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
-		canvas = document.getElementById('quickGraphs'),
+		canvas = document.getElementById('cpuGraphs'),
 		series = new TimeSeries();
 		chart.addTimeSeries(series, {lineWidth:1.3,strokeStyle:'#00ff00'});
-		chart.streamTo(canvas, 500);
+		chart.streamTo(canvas, 1000);
 		
-		var chart2 = new SmoothieChart({millisPerPixel:45,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
-		canvas2 = document.getElementById('quickGraphs2'),
+		var chart2 = new SmoothieChart({millisPerPixel:50,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
+		canvas2 = document.getElementById('tempGraphs'),
 		series2 = new TimeSeries();
 		chart2.addTimeSeries(series2, {lineWidth:1.3,strokeStyle:'#00ff00'});
-		chart2.streamTo(canvas2, 500);
+		chart2.streamTo(canvas2, 1000);
 		
-		var chart3 = new SmoothieChart({millisPerPixel:45,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
-		canvas3 = document.getElementById('quickGraphs3'),
 		series3 = new TimeSeries();
-		chart3.addTimeSeries(series3, {lineWidth:1.3,strokeStyle:'#00ff00'});
-		chart3.streamTo(canvas3, 500);
+		chart.addTimeSeries(series3, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		//chart.streamTo(canvas, 1000);
 		
-		var chart4 = new SmoothieChart({millisPerPixel:45,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
-		canvas4 = document.getElementById('quickGraphs4'),
 		series4 = new TimeSeries();
-		chart4.addTimeSeries(series4, {lineWidth:1.3,strokeStyle:'#00ff00'});
-		chart4.streamTo(canvas4, 500);
+		chart2.addTimeSeries(series4, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		//chart2.streamTo(canvas2, 1000);
 		
 		setInterval(function()
 		{
@@ -249,12 +243,12 @@
 			$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/temp_json.php").done(function(data)
 			{
 				var datas = JSON.parse(data);
-				series4.append(new Date().getTime(), datas[0]);
+				//series3.append(new Date().getTime(), datas[0]);
 			});
 			$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/cpu_json.php").done(function(data)
 			{
-				//var datas = JSON.parse(data);
-				//series.append(new Date().getTime(), datas[0]);
+				var datas = JSON.parse(data);
+				series.append(new Date().getTime(), datas[0]);
 				//series2.append(new Date().getTime(), datas[1]);
 			});
 		}, 1000);
