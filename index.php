@@ -235,7 +235,7 @@ function random(name)
 		}
 		*/
 		
-		$.ajax("http://<?php echo $_SERVER['SERVER_NAME']; ?>/tools/cpu_json.php").done(function(data)
+		$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/cpu_json.php").done(function(data)
 		{
 			var datas = JSON.parse(data);
 			console.log("Data received " + datas[0]);
