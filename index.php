@@ -216,21 +216,18 @@
 		canvas = document.getElementById('cpuGraphs'),
 		series = new TimeSeries();
 		chart.addTimeSeries(series, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		series2 = new TimeSeries();
+		chart.addTimeSeries(series2, {lineWidth:1.3,strokeStyle:'#0000ff'});
 		chart.streamTo(canvas, 1000);
 		
-		var chart2 = new SmoothieChart({millisPerPixel:50,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
+		var chart2 = new SmoothieChart({millisPerPixel:50,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:65,minValue:20}),
 		canvas2 = document.getElementById('tempGraphs'),
-		series2 = new TimeSeries();
-		chart2.addTimeSeries(series2, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		series3 = new TimeSeries();
+		chart2.addTimeSeries(series3, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		series4 = new TimeSeries();
+		chart2.addTimeSeries(series4, {lineWidth:1.3,strokeStyle:'#0000ff'});
 		chart2.streamTo(canvas2, 1000);
 		
-		series3 = new TimeSeries();
-		chart.addTimeSeries(series3, {lineWidth:1.3,strokeStyle:'#00ff00'});
-		//chart.streamTo(canvas, 1000);
-		
-		series4 = new TimeSeries();
-		chart2.addTimeSeries(series4, {lineWidth:1.3,strokeStyle:'#00ff00'});
-		//chart2.streamTo(canvas2, 1000);
 		
 		setInterval(function()
 		{
@@ -243,13 +240,12 @@
 			$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/temp_json.php").done(function(data)
 			{
 				var datas = JSON.parse(data);
-				//series3.append(new Date().getTime(), datas[0]);
+				series3.append(new Date().getTime(), datas[0]);
 			});
 			$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/cpu_json.php").done(function(data)
 			{
 				var datas = JSON.parse(data);
-				series.append(new Date().getTime(), datas[0]);
-				//series2.append(new Date().getTime(), datas[1]);
+				series4.append(new Date().getTime(), datas[0]);
 			});
 		}, 1000);
 	</script>
