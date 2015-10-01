@@ -235,7 +235,9 @@ function random(name)
 		}*/
 		$.ajax("http://jeanwasilewski.com:8888/tools/cpu_json.php").done(function(data)
 		{
-			console.log("Data received "+data);
+			var datas = JSON.parse(data);
+			console.log("Data received");
+			console.log(datas);
 			value = data;
 			values.push(value);
 			callback(null, values = values.slice((start - stop) / step));
