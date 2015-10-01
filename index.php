@@ -229,23 +229,27 @@ function random(name)
 		while (last < stop)
 		{
 			last += step;
-			//value = 0;//100 * Math.random();
-			value = 0;
+			value = 100 * Math.random();
+			//value = 0;
 			values.push(value);
-		}*/
-		$.ajax("http://jeanwasilewski.com:8888/tools/cpu_json.php").done(function(data)
+		}
+		*/
+		
+		$.ajax("http://<?php echo $_SERVER['SERVER_NAME']; ?>/tools/cpu_json.php").done(function(data)
 		{
 			var datas = JSON.parse(data);
-			console.log("Data received");
-			console.log(datas);
-			value = data;
+			console.log("Data received " + datas[0]);
+			value = datas[0];
+			//value = 100;
 			values.push(value);
 			callback(null, values = values.slice((start - stop) / step));
 		});
+		
+		//callback(null, values = values.slice((start - stop) / step));
 	}, name);
 }
 
-		var context = cubism.context().serverDelay(3).step(1000).size(660);
+		var context = cubism.context().serverDelay(0).clientDelay(0).step(1000).size(660);
 		var value = 0;
 		var values = [];
 		var last;
@@ -262,7 +266,7 @@ function random(name)
 				.data([cpu1, cpu2, temp, hddt])
 				.enter().append("div")
 				.attr("class", "horizon")
-				.call(context.horizon().extent([0, 100]));
+				.call(context.horizon().extent([0, 101]));
 			div.append("div")
 				.attr("class", "rule")
 				.call(context.rule());
