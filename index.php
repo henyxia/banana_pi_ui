@@ -96,7 +96,10 @@
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
           <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-			<div id="quickGraphs"></div>
+			<canvas id="quickGraphs" width="500" height="125"></canvas>
+			<canvas id="quickGraphs2" width="500" height="125"></canvas>
+			<canvas id="quickGraphs3" width="500" height="125"></canvas>
+			<canvas id="quickGraphs4" width="500" height="125"></canvas>
           </div>
           <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
             <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
@@ -209,72 +212,52 @@
       <a href="<?php echo "http://".$_SERVER['HTTP_HOST']."/edit.php"; ?>" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">Edit Source</a>
 	<script src="jquery-2.1.4.min.js"></script>
     <script src="material.min.js"></script>
-	<script src="d3.min.js"></script>
-	<script src="cubism.v1.min.js"></script>
+	<script src="smoothie.js"></script>
 	<script>
-
-function random(name)
-{
-	var value = 0,
-    values = [],
-    i = 0,
-    last;
-	return context.metric(function(start, stop, step, callback)
-	{
-		start = +start, stop = +stop;
-		if (isNaN(last)) last = start;
-		value = 0;
-		values.push(value);
-		/*
-		while (last < stop)
-		{
-			last += step;
-			value = 100 * Math.random();
-			//value = 0;
-			values.push(value);
-		}
-		*/
+		var chart = new SmoothieChart({millisPerPixel:50,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
+		canvas = document.getElementById('quickGraphs'),
+		series = new TimeSeries();
+		chart.addTimeSeries(series, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		chart.streamTo(canvas, 500);
 		
-		$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/cpu_json.php").done(function(data)
-		{
-			var datas = JSON.parse(data);
-			console.log("Data received " + datas[0]);
-			value = datas[0];
-			//value = 100;
-			values.push(value);
-			callback(null, values = values.slice((start - stop) / step));
-		});
+		var chart2 = new SmoothieChart({millisPerPixel:45,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
+		canvas2 = document.getElementById('quickGraphs2'),
+		series2 = new TimeSeries();
+		chart2.addTimeSeries(series2, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		chart2.streamTo(canvas2, 500);
 		
-		//callback(null, values = values.slice((start - stop) / step));
-	}, name);
-}
-
-		var context = cubism.context().serverDelay(0).clientDelay(0).step(1000).size(660);
-		var value = 0;
-		var values = [];
-		var last;
-		var cpu1 = random("cpu1 ");
-		var cpu2 = random("cpu2 ");
-		var temp = random("temp ");
-		var hddt = random("hdd  ");
-		d3.select("#quickGraphs").call(function(div)
+		var chart3 = new SmoothieChart({millisPerPixel:45,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
+		canvas3 = document.getElementById('quickGraphs3'),
+		series3 = new TimeSeries();
+		chart3.addTimeSeries(series3, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		chart3.streamTo(canvas3, 500);
+		
+		var chart4 = new SmoothieChart({millisPerPixel:45,interpolation:'step',grid:{sharpLines:true,borderVisible:false},labels:{fontSize:9},timestampFormatter:SmoothieChart.timeFormatter,maxValue:100,minValue:0}),
+		canvas4 = document.getElementById('quickGraphs4'),
+		series4 = new TimeSeries();
+		chart4.addTimeSeries(series4, {lineWidth:1.3,strokeStyle:'#00ff00'});
+		chart4.streamTo(canvas4, 500);
+		
+		setInterval(function()
 		{
-			div.append("div")
-				.attr("class", "axis")
-				.call(context.axis().orient("top"));
-			div.selectAll(".horizon")
-				.data([cpu1, cpu2, temp, hddt])
-				.enter().append("div")
-				.attr("class", "horizon")
-				.call(context.horizon().extent([0, 101]));
-			div.append("div")
-				.attr("class", "rule")
-				.call(context.rule());
-		});
-		context.on("focus", function(i)
-		{
-			d3.selectAll(".value").style("right", i == null ? null : context.size() - i + "px");
-		});
+			$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/cpu_json.php").done(function(data)
+			{
+				var datas = JSON.parse(data);
+				series.append(new Date().getTime(), datas[0]);
+				series2.append(new Date().getTime(), datas[1]);
+			});
+			$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/temp_json.php").done(function(data)
+			{
+				var datas = JSON.parse(data);
+				series4.append(new Date().getTime(), datas[0]);
+			});
+			$.ajax("http://<?php echo $_SERVER['HTTP_HOST']; ?>/tools/cpu_json.php").done(function(data)
+			{
+				//var datas = JSON.parse(data);
+				//series.append(new Date().getTime(), datas[0]);
+				//series2.append(new Date().getTime(), datas[1]);
+			});
+		}, 1000);
 	</script>
   </body>
 </html>
