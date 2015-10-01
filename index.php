@@ -207,26 +207,40 @@
         </defs>
       </svg>
       <a href="<?php echo "http://".$_SERVER['HTTP_HOST']."/edit.php"; ?>" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">Edit Source</a>
+	<script src="jquery-2.1.4.min.js"></script>
     <script src="material.min.js"></script>
 	<script src="d3.min.js"></script>
 	<script src="cubism.v1.min.js"></script>
 	<script>
 
-function random(name) {
-  var value = 0,
-      values = [],
-      i = 0,
-      last;
-  return context.metric(function(start, stop, step, callback) {
-    start = +start, stop = +stop;
-    if (isNaN(last)) last = start;
-    while (last < stop) {
-      last += step;
-      value = 0;//100 * Math.random();
-      values.push(value);
-    }
-    callback(null, values = values.slice((start - stop) / step));
-  }, name);
+function random(name)
+{
+	var value = 0,
+    values = [],
+    i = 0,
+    last;
+	return context.metric(function(start, stop, step, callback)
+	{
+		start = +start, stop = +stop;
+		if (isNaN(last)) last = start;
+		value = 0;
+		values.push(value);
+		/*
+		while (last < stop)
+		{
+			last += step;
+			//value = 0;//100 * Math.random();
+			value = 0;
+			values.push(value);
+		}*/
+		$.ajax("http://jeanwasilewski.com:8888/tools/cpu_json.php").done(function(data)
+		{
+			console.log("Data received "+data);
+			value = data;
+			values.push(value);
+			callback(null, values = values.slice((start - stop) / step));
+		});
+	}, name);
 }
 
 		var context = cubism.context().serverDelay(3).step(1000).size(660);
